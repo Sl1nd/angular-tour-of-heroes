@@ -17,7 +17,7 @@ describe('DashboardComponent', () => {
       name: 'Achilis'
     }, {
         id: 2,
-        name: 'Hextor'
+        name: 'Hector'
       }];
 
     // Create a fake HeroService object with a `getHeroes()` spy
