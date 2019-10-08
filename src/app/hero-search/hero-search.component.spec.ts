@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { HeroSearchComponent } from './hero-search.component';
 import { Hero } from '../hero';
-import {newEvent, RouterLinkDirectiveStub} from '../../testing';
+import { newEvent, RouterLinkDirectiveStub } from '../../testing';
 import { of } from 'rxjs';
 import { HeroService } from '../hero.service';
 
@@ -24,31 +24,28 @@ describe('HeroSearchComponent', () => {
     heroServiceSpy.searchHeroes.and.returnValue(of(testHeroes));
 
     TestBed.configureTestingModule({
-      declarations: [HeroSearchComponent, RouterLinkDirectiveStub ],
+      declarations: [HeroSearchComponent, RouterLinkDirectiveStub],
       providers: [{ provide: HeroService, useValue: heroServiceSpy }],
       imports: [HttpClientTestingModule]
     })
-    .compileComponents();
-    }));
+      .compileComponents();
+  }));
 
   beforeEach(() => {
-      fixture = TestBed.createComponent(HeroSearchComponent);
-      component = fixture.componentInstance;
-      heroSearchComponent = fixture.nativeElement;
-      inputField = heroSearchComponent.querySelector('input');
-      fixture.detectChanges();
-    });
-
-  afterEach(() => {
-      inputField.value = '';
-    });
+    fixture = TestBed.createComponent(HeroSearchComponent);
+    component = fixture.componentInstance;
+    heroSearchComponent = fixture.nativeElement;
+    inputField = heroSearchComponent.querySelector('input');
+    fixture.detectChanges();
+  });
 
   it('Should search term', fakeAsync(() => {
     const spy = spyOn(component, 'search');
     inputField.value = 'foo';
     inputField.dispatchEvent(newEvent('input'));
-    tick(300);
     fixture.detectChanges();
+    tick(600);
+    const test = spy.calls.mostRecent();
     expect(spy).toHaveBeenCalledWith('foo');
   }));
 
@@ -56,8 +53,9 @@ describe('HeroSearchComponent', () => {
   it('Should call hero service', fakeAsync(() => {
     inputField.value = 'bar';
     inputField.dispatchEvent(newEvent('input'));
-    tick(300);
     fixture.detectChanges();
+    tick(600);
+    const test = heroServiceSpy.searchHeroes.calls.mostRecent();
     expect(heroServiceSpy.searchHeroes).toHaveBeenCalledWith('bar');
   }));
 });
